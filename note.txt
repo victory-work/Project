@@ -1,0 +1,36 @@
+1. 
+unhandled field
+{'jurisdictionC': 10, 'jurisdictionST': 9, 'jurisdictionL': 1, 'businessCategory': 8, 'serialNumber': 8,
+ 'subjectAltName': 4, 'name': 2, 'initials': 2, 'dnQualifier': 2, 'street': 2}
+
+影響的cert
+benign: 10
+malicious: 4
+
+2. 
+因為有些O當中有使用',' 所以不能用其當作分隔符
+
+3. 
+benign missing:
+{'C': 0.9475, 'ST': 0.947875, 'L': 0.948125, 'O': 0.997125, 'OU': 0.9985, 'CN': 0.0515, 'emailAddress': 1.0}
+ {'C': 7580, 'ST': 7583, 'L': 7585, 'O': 7977, 'OU': 7988, 'CN': 412, 'emailAddress': 8000}
+{'C': 0.0, 'ST': 0.997625, 'L': 0.999125, 'O': 0.94625, 'OU': 0.996875, 'CN': 0.94725, 'emailAddress': 1.0}
+ {'C': 0, 'ST': 7981, 'L': 7993, 'O': 7570, 'OU': 7975, 'CN': 7578, 'emailAddress': 8000}
+malicous missing:
+{'C': 0.584, 'ST': 0.685, 'L': 0.6995, 'O': 0.5905, 'OU': 0.793, 'CN': 0.1105, 'emailAddress': 0.969}
+ {'C': 1168, 'ST': 1370, 'L': 1399, 'O': 1181, 'OU': 1586, 'CN': 221, 'emailAddress': 1938}
+{'C': 0.244, 'ST': 0.666, 'L': 0.689, 'O': 0.589, 'OU': 0.8075, 'CN': 0.455, 'emailAddress': 0.97}
+ {'C': 488, 'ST': 1332, 'L': 1378, 'O': 1178, 'OU': 1615, 'CN': 910, 'emailAddress': 1940}
+
+4.
+train 1: 使用六個欄位去訓練 subject["C", "O", "CN"]、issuer["C", "O", "CN"]，但是準確率不高(低於0.8)
+train 2: 選擇一張憑證中的四個欄位去訓練 subject["CN"]、issuer["C", "O", "CN"]
+train 3: epoch 20, batch_size 64，結果依然不好
+=> 資料不平衡可能會嚴重影響準確率???
+
+5. textattack安裝
+有一個很煩的套件要另外裝(pycld2)，要去下載檔案，而且要符合版本cp。
+另外numpy 版本可能要調整，pip install numpy==1.20.3 (這個有點麻煩)
+
+6. 解析憑證問題
+有時候會產生base64編碼或著是其他的非ascii碼，在換到crypto後有解決?????
