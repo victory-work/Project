@@ -11,7 +11,7 @@ learning_rate = 2e-5
 setup_seed(20)
 
 if __name__ == "__main__":
-    df = pd.read_csv("Project/trai_dataset.csv")
+    df = pd.read_csv("Project/cert_dataset.csv")
     cert_texts = list(df["text"])
     cert_labels = list(df["label"])
 

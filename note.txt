@@ -44,3 +44,7 @@ uncased ID => 14vJGAnm2wnCZUa0exK8ZIUNSYmxaaQ2L
 (2) BERT model cased
 https://drive.google.com/file/d/14ytriW0pmgBXhVzhQo-TkRPkuzct6Nvi/view?usp=drive_link
 cased ID => 14ytriW0pmgBXhVzhQo-TkRPkuzct6Nvi
+
+8. colab 指令
+在colab移動路徑 => %cd <dir>
+在colab刪除檔案 => !rm -rf <dir>
