@@ -41,8 +41,8 @@ if __name__ == "__main__":
 
     for epoch in range(num_epochs):
         print(f"Epoch {epoch + 1}/{num_epochs}")
-    train(model, train_dataloader, optimizer, scheduler, device)
-    accuracy, report, mse = evaluate(model, eval_dataloader, device)
-    print(f"Validation Accuracy: {accuracy}")
-    print(f"mean_squared_error: {mse}")
-    print(report)
+        train(model, train_dataloader, optimizer, scheduler, device)
+        accuracy, report, mse = evaluate(model, eval_dataloader, device)
+        print(f"Validation Accuracy: {accuracy}")
+        print(f"mean_squared_error: {mse}")
+        print(report)
