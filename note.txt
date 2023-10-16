@@ -26,11 +26,21 @@ malicous missing:
 train 1: 使用六個欄位去訓練 subject["C", "O", "CN"]、issuer["C", "O", "CN"]，但是準確率不高(低於0.8)
 train 2: 選擇一張憑證中的四個欄位去訓練 subject["CN"]、issuer["C", "O", "CN"]
 train 3: epoch 20, batch_size 64，結果依然不好
-=> 資料不平衡可能會嚴重影響準確率???
+train 4: 採用 N/A方式處理，accuracy高於0.95，至於uncased和cased模型則沒差。
+=> 資料的編碼方式嚴重影響準確率
 
 5. textattack安裝
 有一個很煩的套件要另外裝(pycld2)，要去下載檔案，而且要符合版本cp。
 另外numpy 版本可能要調整，pip install numpy==1.20.3 (這個有點麻煩)
 
 6. 解析憑證問題
-有時候會產生base64編碼或著是其他的非ascii碼，在換到crypto後有解決?????
+有時候會產生base64編碼或著是其他的非ascii碼(ex. unicode)，無法顯示到憑證中。
+
+7. gdown file ID
+(1) BERT model uncased
+https://drive.google.com/file/d/14vJGAnm2wnCZUa0exK8ZIUNSYmxaaQ2L/view?usp=drive_link
+uncased ID => 14vJGAnm2wnCZUa0exK8ZIUNSYmxaaQ2L
+
+(2) BERT model cased
+https://drive.google.com/file/d/14ytriW0pmgBXhVzhQo-TkRPkuzct6Nvi/view?usp=drive_link
+cased ID => 14ytriW0pmgBXhVzhQo-TkRPkuzct6Nvi
