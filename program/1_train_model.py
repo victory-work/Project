@@ -11,7 +11,7 @@ learning_rate = 2e-5
 setup_seed(20)
 
 if __name__ == "__main__":
-    df = pd.read_csv("train_dataset.csv")
+    df = pd.read_csv("trai_dataset.csv")
     cert_texts = list(df["text"])
     cert_labels = list(df["label"])
 
@@ -39,4 +39,10 @@ if __name__ == "__main__":
     scheduler = get_linear_schedule_with_warmup(
         optimizer, num_warmup_steps=0, num_training_steps=total_steps)
 
+    for epoch in range(num_epochs):
+        print(f"Epoch {epoch + 1}/{num_epochs}")
+    train(model, train_dataloader, optimizer, scheduler, device)
     accuracy, report, mse = evaluate(model, eval_dataloader, device)
+    print(f"Validation Accuracy: {accuracy}")
+    print(f"mean_squared_error: {mse}")
+    print(report)
