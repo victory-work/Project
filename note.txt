@@ -8,10 +8,10 @@ benign: 10
 malicious: 4
 
 2. 
-因為有些O當中有使用',' 所以不能用其當作分隔符
+因為有些O當中有使用',' 所以不能用','當作分隔符，不然會檢查錯誤。
 
 3. 
-benign missing:
+benign missing percentage:
 {'C': 0.9475, 'ST': 0.947875, 'L': 0.948125, 'O': 0.997125, 'OU': 0.9985, 'CN': 0.0515, 'emailAddress': 1.0}
  {'C': 7580, 'ST': 7583, 'L': 7585, 'O': 7977, 'OU': 7988, 'CN': 412, 'emailAddress': 8000}
 {'C': 0.0, 'ST': 0.997625, 'L': 0.999125, 'O': 0.94625, 'OU': 0.996875, 'CN': 0.94725, 'emailAddress': 1.0}
@@ -30,6 +30,7 @@ train 4: 採用 N/A方式處理，accuracy高於0.95，至於uncased和cased模�
 => 資料的編碼方式嚴重影響準確率
 
 5. textattack安裝
+https://www.lfd.uci.edu/~gohlke/pythonlibs/#jpype
 有一個很煩的套件要另外裝(pycld2)，要去下載檔案，而且要符合版本cp。
 另外numpy 版本可能要調整，pip install numpy==1.20.3 (這個有點麻煩)
 
@@ -48,3 +49,11 @@ cased ID => 14ytriW0pmgBXhVzhQo-TkRPkuzct6Nvi
 8. colab 指令
 在colab移動路徑 => %cd <dir>
 在colab刪除檔案 => !rm -rf Project
+
+9. 目前任務
+(1) 將資料夾內的malicous_dataset中的cert分類，取出預測正確的。(target_dataset.csv)
+    malicious_dataset.csv => 136 data, 正確預測的有127筆資料，將用於adversary attack。
+    # accuracy 0.93
+
+(2) 學會使用textattack
+    learning...
