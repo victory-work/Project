@@ -1,4 +1,4 @@
-from program.func_def import *
+from func_def import *
 
 
 bert_model_name = 'bert-base-cased'
