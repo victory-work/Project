@@ -46,3 +46,5 @@ if __name__ == "__main__":
         print(f"Validation Accuracy: {accuracy}")
         print(f"mean_squared_error: {mse}")
         print(report)
+
+    torch.save(model.state_dict(), 'BERT_model_state_uncased.pt')
