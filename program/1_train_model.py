@@ -5,7 +5,7 @@ bert_model_name = 'bert-base-cased'
 num_classes = 2
 max_length = 128
 batch_size = 64
-num_epochs = 20
+num_epochs = 10
 learning_rate = 2e-5
 
 
