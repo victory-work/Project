@@ -1,4 +1,4 @@
-from func_def import *
+from program.func_def import *
 
 
 bert_model_name = 'bert-base-cased'
@@ -8,10 +8,11 @@ batch_size = 64
 num_epochs = 20
 learning_rate = 2e-5
 
-setup_seed(20)
 
 if __name__ == "__main__":
-    df = pd.read_csv("Project/cert_dataset.csv")
+    csv_file = "double_quotes_train.csv"
+    print("dataset: ", csv_file)
+    df = pd.read_csv(f"Project/{csv_file}")
     cert_texts = list(df["text"])
     cert_labels = list(df["label"])
 

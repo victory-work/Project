@@ -8,7 +8,9 @@ max_length = 128
 batch_size = 64
 
 if __name__ == "__main__":
-    mali_df = pd.read_csv("Project/malicious_dataset.csv")
+    csv_file = "double_quotes_mali.csv"
+    target_file = "double_quotes_attack.csv"
+    mali_df = pd.read_csv(f"Project/{csv_file}")
     mali_texts = list(mali_df["text"])
     mali_labels = list(mali_df["label"])
 
@@ -54,5 +56,5 @@ if __name__ == "__main__":
 
     # Create a DataFrame from the successful predictions
     successful_predictions_df = pd.DataFrame(successful_predictions)
-    successful_predictions_df.to_csv("target_dataset.csv")
+    successful_predictions_df.to_csv(target_file)
     print(successful_predictions_df)

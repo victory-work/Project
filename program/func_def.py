@@ -8,6 +8,10 @@ from transformers import BertModel, AdamW, BertTokenizer, get_linear_schedule_wi
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, mean_squared_error
 
+from textattack.datasets import Dataset
+from textattack.models.wrappers import ModelWrapper
+
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
@@ -102,8 +106,32 @@ def evaluate(model, data_loader, device):
         mean_squared_error(actual_labels, predictions)
 
 
-def setup_seed(seed):
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    np.random.seed(seed)
-    torch.backends.cudnn.deterministic = True
+# textattack function
+
+class BERTClassifierWrapper(ModelWrapper):
+    def __init__(self, model, tokenizer):
+        self.model = model
+        self.tokenizer = tokenizer
+
+    def __call__(self, text_list):
+        inputs = self.tokenizer(
+            text_list, return_tensors='pt', padding=True, truncation=True)
+        with torch.no_grad():
+            logits = self.model(input_ids=inputs['input_ids'].to(
+                device), attention_mask=inputs['attention_mask'].to(device))
+        return torch.nn.functional.softmax(logits, dim=1)
+
+
+class CustomTextClassificationDataset(Dataset):
+    def __init__(self, texts, labels, label_names=None, shuffle=False):
+        self.texts = texts
+        self.labels = labels
+        self.label_names = label_names
+        self.shuffled = shuffle
+
+    def __len__(self):
+        return len(self.texts)
+
+    def __getitem__(self, idx):
+        print(self.texts[idx])
+        return (self.texts[idx], self.labels[idx])
