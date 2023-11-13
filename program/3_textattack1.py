@@ -1,5 +1,5 @@
 from func_def import *
-from textattack.attack_recipes import BERTAttackLi2020, PWWSRen2019
+from textattack.attack_recipes import BERTAttackLi2020, PWWSRen2019,TextFoolerJin2019
 from textattack import Attacker
 from textattack import AttackArgs
 
@@ -25,13 +25,13 @@ if __name__ == "__main__":
     model = BERTClassifier(bert_model_name, num_classes)
     model.load_state_dict(torch.load("BERT_model_state_uncased.pt"))
 
-    # PWWSRen2019
+    # TextFoolerJin2019
     # attack method
-    attack_recipe = PWWSRen2019.build(
+    attack_recipe = TextFoolerJin2019.build(
         model_wrapper=BERTClassifierWrapper(model, tokenizer))
     attack_args = AttackArgs(
         num_examples=-1,
-        log_to_csv="PWWSREN2019_result.csv",
+        log_to_csv="TextFoolerJin2019_result.csv",
         disable_stdout=True
     )
     attacker = Attacker(attack_recipe, target_dataset, attack_args=attack_args)
