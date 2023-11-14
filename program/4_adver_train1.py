@@ -20,13 +20,15 @@ print(df.shape)
 
 # Split the dataset into training and evaluation sets
 train_df, eval_df = train_test_split(df, test_size=0.2, random_state=42)
+train_dataset = textattack.datasets.HuggingFaceDataset(df, split="train")
+eval_dataset = textattack.datasets.HuggingFaceDataset(df, split="test")
 
-# Create TextAttack datasets
-train_texts, train_labels = train_df['text'].tolist(), train_df['label'].tolist()
-eval_texts, eval_labels = eval_df['text'].tolist(), eval_df['label'].tolist()
+# # Create TextAttack datasets
+# train_texts, train_labels = train_df['text'].tolist(), train_df['label'].tolist()
+# eval_texts, eval_labels = eval_df['text'].tolist(), eval_df['label'].tolist()
 
-train_dataset = textattack.datasets.Dataset(train_texts, train_labels)
-eval_dataset = textattack.datasets.Dataset(eval_texts, eval_labels)
+# train_dataset = textattack.datasets.Dataset(train_texts, train_labels)
+# eval_dataset = textattack.datasets.Dataset(eval_texts, eval_labels)
 
 # Train for 3 epochs with 1 initial clean epochs, 1000 adversarial examples per epoch, learning rate of 5e-5, and effective batch size of 32 (8x4).
 training_args = textattack.TrainingArgs(
