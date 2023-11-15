@@ -23,8 +23,8 @@ train_df, eval_df = train_test_split(df, test_size=0.2, random_state=42)
 train_list = [(text, label) for text, label in zip(train_df["text"], train_df["label"])]
 eval_list = [(text, label) for text, label in zip(eval_df["text"], eval_df["label"])]
 
-train_dataset = textattack.datasets.Dataset(train_list,input_columns=("text"))
-eval_dataset = textattack.datasets.Dataset(eval_list,input_columns=("text"))
+train_dataset = textattack.datasets.Dataset(train_list)
+eval_dataset = textattack.datasets.Dataset(eval_list)
 
 # Train for 3 epochs with 1 initial clean epochs, 1000 adversarial examples per epoch, learning rate of 5e-5, and effective batch size of 32 (8x4).
 training_args = textattack.TrainingArgs(
