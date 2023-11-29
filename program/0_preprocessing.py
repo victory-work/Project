@@ -60,9 +60,7 @@ def generating_dataset(cert_dirs, title):
                 #     print(texts, label, "\n", file_path)
                 
                 # main field
-                subject_attr = [x509.NameOID.COUNTRY_NAME, x509.NameOID.STATE_OR_PROVINCE_NAME,
-                                x509.NameOID.LOCALITY_NAME,x509.NameOID.ORGANIZATION_NAME, 
-                                x509.NameOID.COMMON_NAME]
+                subject_attr = [x509.NameOID.COMMON_NAME, x509.NameOID.COUNTRY_NAME ,x509.NameOID.ORGANIZATION_NAME ]
                 for attr in subject_attr:
                     try:
                         texts += x509_cert.subject.get_attributes_for_oid(attr)[
@@ -76,11 +74,14 @@ def generating_dataset(cert_dirs, title):
                     san_ext = x509_cert.extensions.get_extension_for_oid(x509.ExtensionOID.SUBJECT_ALTERNATIVE_NAME)
                     if san_ext:
                         san_values = san_ext.value
-                    
+                        count = 0
                         for name in san_values:
                             if isinstance(name, x509.DNSName):
                                 texts += name.value
                                 texts += ' '
+                                count += 1
+                                if (count > 2):
+                                    break
                 except:
                     pass
                 
