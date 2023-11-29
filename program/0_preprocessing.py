@@ -22,7 +22,7 @@ def generating_dataset(cert_dirs, title):
     # attack_labels only malicious -> 0
     attack_texts, attack_labels = [], []
 
-    sep = 'N/A'
+    empty_fill = 'N/A'
     for (cert_dir, num, label) in cert_dirs:
         count = 0
         for filename in os.listdir(cert_dir):
@@ -40,23 +40,52 @@ def generating_dataset(cert_dirs, title):
                 except:
                     continue
                 # extract subject and issuer principal from x509 object
-                try:
-                    texts += x509_cert.subject.get_attributes_for_oid(
-                        x509.NameOID.COMMON_NAME)[0].value
-                except:
-                    texts += sep
-                texts += ' '
-                issuer_attr = [x509.NameOID.COUNTRY_NAME,
-                               x509.NameOID.ORGANIZATION_NAME, x509.NameOID.COMMON_NAME]
-                for attr in issuer_attr:
-                    try:
-                        texts += x509_cert.issuer.get_attributes_for_oid(attr)[
-                            0].value
-                    except:
-                        texts += sep
-                    texts += ' '
+                # try:
+                #     texts += x509_cert.subject.get_attributes_for_oid(
+                #         x509.NameOID.COMMON_NAME)[0].value
+                # except:
+                #     texts += sep
+                # texts += ' '
+                
+                # issuer_attr = [x509.NameOID.COUNTRY_NAME,
+                #                x509.NameOID.ORGANIZATION_NAME, x509.NameOID.COMMON_NAME]
+                # for attr in issuer_attr:
+                #     try:
+                #         texts += x509_cert.issuer.get_attributes_for_oid(attr)[
+                #             0].value
+                #     except:
+                #         texts += sep
+                #     texts += ' '
                 # if contains_non_ascii(texts) == True:
                 #     print(texts, label, "\n", file_path)
+                
+                # main field
+                subject_attr = [x509.NameOID.COUNTRY_NAME, x509.NameOID.STATE_OR_PROVINCE_NAME,
+                                x509.NameOID.LOCALITY_NAME,x509.NameOID.ORGANIZATION_NAME, 
+                                x509.NameOID.COMMON_NAME]
+                for attr in subject_attr:
+                    try:
+                        texts += x509_cert.subject.get_attributes_for_oid(attr)[
+                            0].value
+                    except:
+                        texts += empty_fill
+                    texts += ' '
+                
+                # extension field
+                try:
+                    san_ext = x509_cert.extensions.get_extension_for_oid(x509.ExtensionOID.SUBJECT_ALTERNATIVE_NAME)
+                    if san_ext:
+                        san_values = san_ext.value
+                    
+                        for name in san_values:
+                            if isinstance(name, x509.DNSName):
+                                texts += name.value
+                                texts += ' '
+                except:
+                    pass
+                
+                if contains_non_ascii(texts):
+                    continue
 
                 if texts == ("1 1 1 1 " or '* N/A N/A * '):
                     continue
@@ -71,10 +100,12 @@ def generating_dataset(cert_dirs, title):
                     cert_labels.append(label)
 
     df = pd.DataFrame({'text': cert_texts, 'label': cert_labels})
-    df.to_csv(f"{title}_train.csv", index=False)
+    df = df.drop_duplicates()
+    df.to_csv(f"onlyS_{title}_train.csv", index=False)
 
     df2 = pd.DataFrame({'text': attack_texts, 'label': attack_labels})
-    df2.to_csv(f"{title}_mali.csv", index=False)
+    df2 = df2.drop_duplicates()
+    df2.to_csv(f"onlyS_{title}_mali.csv", index=False)
 
 
 if __name__ == "__main__":

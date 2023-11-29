@@ -1,19 +1,48 @@
-from func_def import *
-import pandas as pd
-import textattack
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
 
-csv_path = "double_quotes_train.csv"  # Replace with your CSV file path
-df = pd.read_csv(csv_path)
-print(df.shape)
+# Assuming you have a PEM or DER encoded X.509 certificate
+# You can load the certificate using cryptography library
+with open("benign-cert/0a1d0719fbd0a71838f7450210d694e2d6c7a2da7970ef3b3f43cf99eec9555b.pem", "rb") as cert_file:
+    cert_data = cert_file.read()
+    cert = x509.load_pem_x509_certificate(cert_data, default_backend())
 
-train_df, eval_df = train_test_split(df, test_size=0.2, random_state=42)
+# Extracting subject information
+subject = cert.subject
 
+# Extracting various fields using NameOID constants
+common_name = subject.get_attributes_for_oid(x509.NameOID.COMMON_NAME)
+organization = subject.get_attributes_for_oid(x509.NameOID.ORGANIZATION_NAME)
+organizational_unit = subject.get_attributes_for_oid(x509.NameOID.ORGANIZATIONAL_UNIT_NAME)
+country = subject.get_attributes_for_oid(x509.NameOID.COUNTRY_NAME)
+state = subject.get_attributes_for_oid(x509.NameOID.STATE_OR_PROVINCE_NAME)
+locality = subject.get_attributes_for_oid(x509.NameOID.LOCALITY_NAME)
+email = subject.get_attributes_for_oid(x509.NameOID.EMAIL_ADDRESS)
+entetion = subject.get_attributes_for_oid(x509.Extension)
 
-train_list = [(text, label) for text, label in zip(train_df["text"], train_df["label"])]
-              
-data = [("A man inspects the uniform of a figure in some East Asian country.", "The man is sleeping", 1)]
-dataset = textattack.datasets.Dataset(data, input_columns=("premise", "hypothesis"))
+# Print the extracted information
+print(f"Common Name: {common_name[0].value}")
+print(f"Organization: {organization[0].value}")
 
-# Example for seq2seq
-data = [("J'aime le film.", "I love the movie.")]
-dataset = textattack.datasets.Dataset(data)
+if organizational_unit:
+    print(f"Organizational Unit: {organizational_unit[0].value}")
+if country:
+    print(f"Country: {country[0].value}")
+
+if state:
+    print(f"State: {state[0].value}")
+
+if locality:
+    print(f"Locality: {locality[0].value}")
+
+if email:
+    print(f"Email: {email[0].value}")
+
+# Extract and print Subject Alternative Names (DNS names)
+san_ext = cert.extensions.get_extension_for_oid(x509.ExtensionOID.SUBJECT_ALTERNATIVE_NAME)
+san_values = san_ext.value
+
+# Check if the extension is a x509.DNSName type and print the values
+for name in san_values:
+    if isinstance(name, x509.DNSName):
+        print(f"DNS Name: {name.value}")

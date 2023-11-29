@@ -13,7 +13,7 @@ model_wrapper = BERTClassifierWrapper(model, tokenizer)
 
 # We only use DeepWordBugGao2018 to demonstration purposes.
 attack = textattack.attack_recipes.TextFoolerJin2019.build(model_wrapper)
-csv_path = "Project/double_quotes_train.csv"  # Replace with your CSV file path
+csv_path = "double_quotes_train.csv"  # Replace with your CSV file path
 df = pd.read_csv(csv_path)
 
 # Split the dataset into training and evaluation sets
