@@ -9,6 +9,7 @@ batch_size = 64
 
 if __name__ == "__main__":
     csv_file = "double_quotes_mali.csv"
+    target_file = "double_quotes_attack.csv"
     mali_df = pd.read_csv(f"Project/{csv_file}")
     mali_texts = list(mali_df["text"])
     mali_labels = list(mali_df["label"])
