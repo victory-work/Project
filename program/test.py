@@ -3,10 +3,10 @@ from cryptography.hazmat.backends import default_backend
 
 # Assuming you have a PEM or DER encoded X.509 certificate
 # You can load the certificate using cryptography library
-with open("benign-cert/0a1d0719fbd0a71838f7450210d694e2d6c7a2da7970ef3b3f43cf99eec9555b.pem", "rb") as cert_file:
+with open("malicious-cert\d54b3bff7196c2201a3fe60fac8aa7601175db092268227b8b72c33910fc9dc5.pem", "rb") as cert_file:
     cert_data = cert_file.read()
     cert = x509.load_pem_x509_certificate(cert_data, default_backend())
-
+    #cert = x509.load_der_x509_certificate(cert_data, default_backend())
 # Extracting subject information
 subject = cert.subject
 
@@ -46,3 +46,5 @@ san_values = san_ext.value
 for name in san_values:
     if isinstance(name, x509.DNSName):
         print(f"DNS Name: {name.value}")
+
+print('"" "" "" "" ')

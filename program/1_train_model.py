@@ -10,7 +10,7 @@ learning_rate = 2e-5
 
 
 if __name__ == "__main__":
-    csv_file = "onlyS_NA_train.csv"
+    csv_file = "double_quotes_train.csv"
     print("dataset: ", csv_file)
     df = pd.read_csv(f"Project/{csv_file}")
     cert_texts = list(df["text"])
